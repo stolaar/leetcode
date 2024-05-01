@@ -50,7 +50,7 @@ func generateFiles(question Question) {
 
 var ProblemCmd = &cobra.Command{
 	Use:   "problem",
-	Short: "Get leetcode daily",
+	Short: "Get problem by title slug",
 	Run: func(cmd *cobra.Command, args []string) {
 		println("Generating leetcode problem...", id)
 		question := GetProblemByTitleSlug(id)
