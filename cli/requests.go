@@ -70,26 +70,11 @@ func GetDailyProblem() DailyResponse {
             questionFrontendId
             title
             titleSlug
-            content
-            translatedTitle
-            contributors {
-                username
-                profileUrl
-                avatarUrl
-            }
-            topicTags {
-                name
-                slug
-                translatedName
-            }
-            companyTagStats
             codeSnippets {
                 lang
                 langSlug
                 code
             }
-            status
-            sampleTestCase
         }
     }
 }
