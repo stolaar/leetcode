@@ -128,7 +128,7 @@ func getStartingCode(codeSnippets []CodeSnippets) string {
 }
 
 func generateFiles(question Question) {
-	dirName := filepath.Join("../", question.QuestionFrontendId+"."+question.TitleSlug)
+	dirName := filepath.Join("problems/", question.QuestionFrontendId+"."+question.TitleSlug)
 	fileName := question.TitleSlug + ".go"
 	path := filepath.Join(dirName, fileName)
 
