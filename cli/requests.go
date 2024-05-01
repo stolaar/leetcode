@@ -22,7 +22,7 @@ type Question struct {
 }
 
 type Problem struct {
-  Question Question `json:"question"`
+	Question Question `json:"question"`
 }
 
 type DailyResponse struct {
@@ -106,6 +106,3 @@ func GetDailyProblem() DailyResponse {
 	return response
 
 }
-
-
-
