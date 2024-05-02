@@ -25,9 +25,9 @@ func getStartingCode(codeSnippets []CodeSnippets) string {
 }
 
 func removeTags(content string) string {
-  r := regexp.MustCompile("(?im)(<.*?>)")
+	r := regexp.MustCompile("(?im)(<.*?>)")
 
-  return r.ReplaceAllString(content, "")
+	return r.ReplaceAllString(content, "")
 }
 
 func writeProblemFile(path string, dirName string, content string) {
@@ -37,7 +37,6 @@ func writeProblemFile(path string, dirName string, content string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 
 		err = os.WriteFile(path, []byte(content), 0644)
 
@@ -59,11 +58,11 @@ func generateFiles(question Question) {
 	codePath := filepath.Join(dirName, fileName)
 	descriptionPath := filepath.Join(dirName, descriptionName)
 
-  snippet := getStartingCode(question.CodeSnippets)
-  description := removeTags(question.Content)
+	snippet := getStartingCode(question.CodeSnippets)
+	description := removeTags(question.Content)
 
-  writeProblemFile(codePath, dirName, snippet)
-  writeProblemFile(descriptionPath, dirName, description)
+	writeProblemFile(codePath, dirName, snippet)
+	writeProblemFile(descriptionPath, dirName, description)
 }
 
 var ProblemCmd = &cobra.Command{
@@ -71,7 +70,7 @@ var ProblemCmd = &cobra.Command{
 	Short: "Get problem by title slug",
 	Run: func(cmd *cobra.Command, args []string) {
 		println("Generating leetcode problem...")
-		question := GetProblemByTitleSlug(id)
+		question := GetProblemBySearchInput(id)
 
 		generateFiles(question)
 	},

@@ -33,35 +33,53 @@ type DailyResponse struct {
 	} `json:"activeDailyCodingChallengeQuestion"`
 }
 
-func GetProblemByTitleSlug(titleSlug string) Question {
+type ProblemsList struct {
+	ProblemsetQuestionList struct {
+			Questions []Question `json:"questions"`
+	} `json:"problemsetQuestionList"`
+}
+
+func GetProblemBySearchInput(input string) Question {
 	request := graphql.NewRequest(`
-  query selectProblem($titleSlug: String!) {
-    question(titleSlug: $titleSlug) {
-      questionId
-      questionFrontendId
-      titleSlug
-      content
-      sampleTestCase
-      codeSnippets {
-          lang
-          langSlug
-          code
+  query problemsetQuestionList($categorySlug: String!, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
+    problemsetQuestionList: questionList(categorySlug: $categorySlug, limit: $limit, skip: $skip, filters: $filters) {
+      questions: data {
+          questionId
+          questionFrontendId
+          titleSlug
+          content
+          sampleTestCase
+          codeSnippets {
+              lang
+              langSlug
+              code
+          }
+        }
       }
-    }
   }
   `)
 
-	request.Var("titleSlug", titleSlug)
+	filters := make(map[string]string)
+	filters["searchKeywords"] = input
+
+	request.Var("categorySlug", "all-code-essentials")
+	request.Var("limit", 1)
+	request.Var("skip", 0)
+	request.Var("filters", filters)
 
 	ctx := context.Background()
 
-	var response Problem
+	var response ProblemsList
 
 	if err := client.Run(ctx, request, &response); err != nil {
 		log.Fatal(err)
 	}
 
-	return response.Question
+	if len(response.ProblemsetQuestionList.Questions) > 0 {
+		return response.ProblemsetQuestionList.Questions[0]
+	}
+
+	return Question{}
 }
 
 func GetDailyProblem() DailyResponse {
