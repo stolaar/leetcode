@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 
 	"github.com/spf13/cobra"
 )
@@ -23,11 +24,13 @@ func getStartingCode(codeSnippets []CodeSnippets) string {
 
 }
 
-func generateFiles(question Question) {
-	dirName := filepath.Join("problems/", question.QuestionFrontendId+"."+question.TitleSlug)
-	fileName := question.TitleSlug + ".go"
-	path := filepath.Join(dirName, fileName)
+func removeTags(content string) string {
+  r := regexp.MustCompile("(?im)(<.*?>)")
 
+  return r.ReplaceAllString(content, "")
+}
+
+func writeProblemFile(path string, dirName string, content string) {
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 		err := os.MkdirAll(dirName, os.ModePerm)
 
@@ -35,9 +38,8 @@ func generateFiles(question Question) {
 			log.Fatal(err)
 		}
 
-		codeSnippet := getStartingCode(question.CodeSnippets)
 
-		err = os.WriteFile(path, []byte(codeSnippet), 0644)
+		err = os.WriteFile(path, []byte(content), 0644)
 
 		if err != nil {
 			log.Fatal(err)
@@ -46,13 +48,29 @@ func generateFiles(question Question) {
 		return
 	}
 	println("Files already created")
+
+}
+
+func generateFiles(question Question) {
+	dirName := filepath.Join("problems/", question.QuestionFrontendId+"."+question.TitleSlug)
+	fileName := question.TitleSlug + ".go"
+	descriptionName := "description.txt"
+
+	codePath := filepath.Join(dirName, fileName)
+	descriptionPath := filepath.Join(dirName, descriptionName)
+
+  snippet := getStartingCode(question.CodeSnippets)
+  description := removeTags(question.Content)
+
+  writeProblemFile(codePath, dirName, snippet)
+  writeProblemFile(descriptionPath, dirName, description)
 }
 
 var ProblemCmd = &cobra.Command{
 	Use:   "problem",
 	Short: "Get problem by title slug",
 	Run: func(cmd *cobra.Command, args []string) {
-		println("Generating leetcode problem...", id)
+		println("Generating leetcode problem...")
 		question := GetProblemByTitleSlug(id)
 
 		generateFiles(question)

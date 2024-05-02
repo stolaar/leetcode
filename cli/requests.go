@@ -19,6 +19,8 @@ type Question struct {
 	QuestionId         string         `json:"questionId"`
 	TitleSlug          string         `json:"titleSlug"`
 	CodeSnippets       []CodeSnippets `json:"codeSnippets"`
+	Content            string         `json:"content"`
+	SampleTestCase     string         `json:"sampleTestCase"`
 }
 
 type Problem struct {
@@ -38,6 +40,8 @@ func GetProblemByTitleSlug(titleSlug string) Question {
       questionId
       questionFrontendId
       titleSlug
+      content
+      sampleTestCase
       codeSnippets {
           lang
           langSlug
@@ -70,6 +74,8 @@ func GetDailyProblem() DailyResponse {
             questionFrontendId
             title
             titleSlug
+            content
+            sampleTestCase
             codeSnippets {
                 lang
                 langSlug
