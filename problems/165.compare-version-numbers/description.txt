@@ -1,0 +1,51 @@
+Given two version numbers,&nbsp;version1 and version2, compare them.
+
+
+
+
+Version numbers consist of one or more revisions joined by a dot&nbsp;&#39;.&#39;. Each revision&nbsp;consists of digits&nbsp;and may contain leading zeros. Every revision contains at least one character. Revisions are 0-indexed from left to right, with the leftmost revision being revision 0, the next revision being revision 1, and so on. For example&nbsp;2.5.33&nbsp;and&nbsp;0.1&nbsp;are valid version numbers.
+
+To compare version numbers, compare their revisions in left-to-right order. Revisions are compared using their&nbsp;integer value ignoring any leading zeros. This means that revisions&nbsp;1&nbsp;and&nbsp;001&nbsp;are considered&nbsp;equal. If a version number does not specify a revision at an index, then&nbsp;treat the revision as&nbsp;0. For example, version&nbsp;1.0 is less than version&nbsp;1.1&nbsp;because their revision 0s are the same, but their revision 1s are&nbsp;0&nbsp;and&nbsp;1&nbsp;respectively, and&nbsp;0 &lt; 1.
+
+Return the following:
+
+
+	If version1 &lt; version2, return -1.
+	If version1 &gt; version2, return 1.
+	Otherwise, return 0.
+
+
+&nbsp;
+Example 1:
+
+
+Input: version1 = &quot;1.01&quot;, version2 = &quot;1.001&quot;
+Output: 0
+Explanation: Ignoring leading zeroes, both &quot;01&quot; and &quot;001&quot; represent the same integer &quot;1&quot;.
+
+
+Example 2:
+
+
+Input: version1 = &quot;1.0&quot;, version2 = &quot;1.0.0&quot;
+Output: 0
+Explanation: version1 does not specify revision 2, which means it is treated as &quot;0&quot;.
+
+
+Example 3:
+
+
+Input: version1 = &quot;0.1&quot;, version2 = &quot;1.1&quot;
+Output: -1
+Explanation: version1&#39;s revision 0 is &quot;0&quot;, while version2&#39;s revision 0 is &quot;1&quot;. 0 &lt; 1, so version1 &lt; version2.
+
+
+&nbsp;
+Constraints:
+
+
+	1 &lt;= version1.length, version2.length &lt;= 500
+	version1 and version2&nbsp;only contain digits and &#39;.&#39;.
+	version1 and version2&nbsp;are valid version numbers.
+	All the given revisions in&nbsp;version1 and version2&nbsp;can be stored in&nbsp;a&nbsp;32-bit integer.
+
