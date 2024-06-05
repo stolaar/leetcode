@@ -2,42 +2,39 @@ package main
 
 import (
 	"fmt"
-	"maps"
+	"strings"
+	"time"
 )
 
-func findWordCommonChars(word string, charsMap map[rune]int, idx int) {
-  wordCharsMap := make(map[rune]int)
+func findLongestWord(words []string) string {
+  longest := words[0]
 
-  for _, char := range word {
-    wordCharsMap[char]++
-  }
-
-  if idx == 0 {
-    maps.Copy(charsMap, wordCharsMap)
-    return
-  }
-
-  for char := range charsMap {
-    if wordCharsMap[char] <= 0 {
-      charsMap[char] = 0
-      continue
+  for i:=1;i<len(words);i++ {
+    if len(words[i])>len(longest) {
+      longest = words[i]
     }
-
-    charsMap[char] = min(charsMap[char], wordCharsMap[char])
   }
 
+  return longest
 }
 
 func commonChars(words []string) []string {
-  charsMap := make(map[rune]int)
   result := []string{}
 
-  for idx, word := range words {
-      findWordCommonChars(word, charsMap, idx)
-  }
+  longest := findLongestWord(words)
 
-  for char, count := range charsMap {
-    for i:=0;i<count;i++ {
+  for _, char := range longest {
+    exists := true
+    for idx, word := range words {
+      if !strings.Contains(word, string(char)) {
+        exists = false
+        break
+      } else {
+        words[idx] = strings.Replace(word, string(char), "", 1)
+      }
+    }
+
+    if exists {
       result = append(result, string(char))
     }
   }
@@ -46,6 +43,8 @@ func commonChars(words []string) []string {
 }
 
 func main() {
+  start := time.Now()
   fmt.Println(commonChars([]string{"bella", "label", "roller"}))
   fmt.Println(commonChars([]string{"cool", "lock", "cook"}))
+  fmt.Println("end", time.Since(start))
 }
