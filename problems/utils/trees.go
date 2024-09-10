@@ -86,3 +86,23 @@ func PrintList(head *ListNode) {
 	println()
 	println("length", count)
 }
+
+func PrintTree(root *TreeNode, space int) {
+	if root == nil {
+		return
+	}
+
+	space += 7
+
+	PrintTree(root.Right, space)
+
+	println()
+
+	for i := 10; i < space; i++ {
+		print(" ")
+	}
+
+	println(root.Val)
+
+	PrintTree(root.Left, space)
+}
