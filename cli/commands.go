@@ -21,7 +21,6 @@ func getStartingCode(codeSnippets []CodeSnippets) string {
 	}
 
 	return code
-
 }
 
 func removeTags(content string) string {
@@ -33,13 +32,11 @@ func removeTags(content string) string {
 func writeProblemFile(path string, dirName string, content string) {
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 		err := os.MkdirAll(dirName, os.ModePerm)
-
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		err = os.WriteFile(path, []byte(content), 0644)
-
+		err = os.WriteFile(path, []byte(content), 0o644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -47,10 +44,9 @@ func writeProblemFile(path string, dirName string, content string) {
 		return
 	}
 	println("Files already created")
-
 }
 
-func generateFiles(question Question) {
+func generateFiles(question *Question) {
 	dirName := filepath.Join("problems/", question.QuestionFrontendId+"."+question.TitleSlug)
 	fileName := question.TitleSlug + ".go"
 	descriptionName := "description.txt"
@@ -84,6 +80,5 @@ var DailyCmd = &cobra.Command{
 		result := GetDailyProblem()
 
 		generateFiles(result.ActiveDailyCodingChallengeQuestion.Question)
-
 	},
 }

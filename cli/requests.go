@@ -29,17 +29,17 @@ type Problem struct {
 
 type DailyResponse struct {
 	ActiveDailyCodingChallengeQuestion struct {
-		Question Question `json:"question"`
+		Question *Question `json:"question"`
 	} `json:"activeDailyCodingChallengeQuestion"`
 }
 
 type ProblemsList struct {
 	ProblemsetQuestionList struct {
-			Questions []Question `json:"questions"`
+		Questions []*Question `json:"questions"`
 	} `json:"problemsetQuestionList"`
 }
 
-func GetProblemBySearchInput(input string) Question {
+func GetProblemBySearchInput(input string) *Question {
 	request := graphql.NewRequest(`
   query problemsetQuestionList($categorySlug: String!, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
     problemsetQuestionList: questionList(categorySlug: $categorySlug, limit: $limit, skip: $skip, filters: $filters) {
@@ -69,20 +69,24 @@ func GetProblemBySearchInput(input string) Question {
 
 	ctx := context.Background()
 
-	var response ProblemsList
+	var response *ProblemsList
 
 	if err := client.Run(ctx, request, &response); err != nil {
 		log.Fatal(err)
+	}
+
+	if response == nil {
+		return nil
 	}
 
 	if len(response.ProblemsetQuestionList.Questions) > 0 {
 		return response.ProblemsetQuestionList.Questions[0]
 	}
 
-	return Question{}
+	return nil
 }
 
-func GetDailyProblem() DailyResponse {
+func GetDailyProblem() *DailyResponse {
 	request := graphql.NewRequest(`
     query getDailyProblem {
     activeDailyCodingChallengeQuestion {
@@ -106,12 +110,11 @@ func GetDailyProblem() DailyResponse {
 
 	ctx := context.Background()
 
-	var response DailyResponse
+	var response *DailyResponse
 
 	if err := client.Run(ctx, request, &response); err != nil {
 		log.Fatal(err)
 	}
 
 	return response
-
 }
