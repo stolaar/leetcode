@@ -2,25 +2,30 @@ package main
 
 import (
 	"fmt"
-	"slices"
+	"math"
 
 	"github.com/stolaar/leetcode/problems/utils"
 )
 
 type TreeNode = utils.TreeNode
 
-func bfs(left, right *TreeNode, level int, levels map[int][]int) {
+func bfs(left, right *TreeNode, level int, levels map[int]int) {
 	if _, ok := levels[level]; !ok && (left != nil || right != nil) {
-		levels[level] = []int{}
+		levels[level] = math.MinInt64
 	}
 
 	if left != nil {
-		levels[level] = append(levels[level], left.Val)
+		if levels[level] < left.Val {
+			levels[level] = left.Val
+		}
+
 		bfs(left.Left, left.Right, level+1, levels)
 	}
 
 	if right != nil {
-		levels[level] = append(levels[level], right.Val)
+		if levels[level] < right.Val {
+			levels[level] = right.Val
+		}
 		bfs(right.Left, right.Right, level+1, levels)
 	}
 }
@@ -34,7 +39,7 @@ func bfs(left, right *TreeNode, level int, levels map[int][]int) {
  * }
  */
 func largestValues(root *TreeNode) []int {
-	levels := map[int][]int{}
+	levels := map[int]int{}
 
 	if root == nil {
 		return []int{}
@@ -46,8 +51,8 @@ func largestValues(root *TreeNode) []int {
 
 	result[0] = root.Val
 
-	for level, values := range levels {
-		result[level] = slices.Max(values)
+	for level, value := range levels {
+		result[level] = value
 	}
 
 	return result
