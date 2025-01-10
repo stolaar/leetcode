@@ -1,0 +1,36 @@
+You are given two string arrays words1 and words2.
+
+A string b is a subset of string a if every letter in b occurs in a including multiplicity.
+
+
+	For example, &quot;wrr&quot; is a subset of &quot;warrior&quot; but is not a subset of &quot;world&quot;.
+
+
+A string a from words1 is universal if for every string b in words2, b is a subset of a.
+
+Return an array of all the universal strings in words1. You may return the answer in any order.
+
+&nbsp;
+Example 1:
+
+
+Input: words1 = [&quot;amazon&quot;,&quot;apple&quot;,&quot;facebook&quot;,&quot;google&quot;,&quot;leetcode&quot;], words2 = [&quot;e&quot;,&quot;o&quot;]
+Output: [&quot;facebook&quot;,&quot;google&quot;,&quot;leetcode&quot;]
+
+
+Example 2:
+
+
+Input: words1 = [&quot;amazon&quot;,&quot;apple&quot;,&quot;facebook&quot;,&quot;google&quot;,&quot;leetcode&quot;], words2 = [&quot;l&quot;,&quot;e&quot;]
+Output: [&quot;apple&quot;,&quot;google&quot;,&quot;leetcode&quot;]
+
+
+&nbsp;
+Constraints:
+
+
+	1 &lt;= words1.length, words2.length &lt;= 104
+	1 &lt;= words1[i].length, words2[i].length &lt;= 10
+	words1[i] and words2[i] consist only of lowercase English letters.
+	All the strings of words1 are unique.
+
