@@ -10,11 +10,51 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func getStartingCode(codeSnippets []CodeSnippets) string {
+type Language string
+
+const (
+	Golang     Language = "golang"
+	Typescript Language = "typescript"
+)
+
+func MapStringToLanguage(lang string) (Language, error) {
+	switch lang {
+	case "go":
+		return Golang, nil
+	case "typescript":
+		return Typescript, nil
+	default:
+		return "", errors.New("Language not supported")
+	}
+}
+
+func (lang Language) String() string {
+	switch lang {
+	case Golang:
+		return "Go"
+	case Typescript:
+		return "TypeScript"
+	default:
+		return ""
+	}
+}
+
+func (lang Language) AddExtension(fileName string) string {
+	switch lang {
+	case Golang:
+		return fileName + ".go"
+	case Typescript:
+		return fileName + ".ts"
+	default:
+		return fileName
+	}
+}
+
+func getStartingCode(codeSnippets []CodeSnippets, lang Language) string {
 	var code string
 
 	for _, snippet := range codeSnippets {
-		if snippet.Lang == "Go" {
+		if snippet.Lang == lang.String() {
 			code = snippet.Code
 			break
 		}
@@ -46,15 +86,15 @@ func writeProblemFile(path string, dirName string, content string) {
 	println("Files already created")
 }
 
-func generateFiles(question *Question) {
+func generateFiles(question *Question, lang Language) {
 	dirName := filepath.Join("problems/", question.QuestionFrontendId+"."+question.TitleSlug)
-	fileName := question.TitleSlug + ".go"
+	fileName := lang.AddExtension("main")
 	descriptionName := "description.txt"
 
 	codePath := filepath.Join(dirName, fileName)
 	descriptionPath := filepath.Join(dirName, descriptionName)
 
-	snippet := getStartingCode(question.CodeSnippets)
+	snippet := getStartingCode(question.CodeSnippets, lang)
 	description := removeTags(question.Content)
 
 	writeProblemFile(codePath, dirName, snippet)
@@ -68,7 +108,12 @@ var ProblemCmd = &cobra.Command{
 		println("Generating leetcode problem...")
 		question := GetProblemBySearchInput(id)
 
-		generateFiles(question)
+		lang, err := MapStringToLanguage(language)
+		if err != nil {
+			panic(err)
+		}
+
+		generateFiles(question, lang)
 	},
 }
 
@@ -79,6 +124,11 @@ var DailyCmd = &cobra.Command{
 		println("Generating leetcode daily...")
 		result := GetDailyProblem()
 
-		generateFiles(result.ActiveDailyCodingChallengeQuestion.Question)
+		lang, err := MapStringToLanguage(language)
+		if err != nil {
+			panic(err)
+		}
+
+		generateFiles(result.ActiveDailyCodingChallengeQuestion.Question, lang)
 	},
 }
