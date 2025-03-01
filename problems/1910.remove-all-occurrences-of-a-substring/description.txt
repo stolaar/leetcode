@@ -1,0 +1,44 @@
+Given two strings s and part, perform the following operation on s until all occurrences of the substring part are removed:
+
+
+	Find the leftmost occurrence of the substring part and remove it from s.
+
+
+Return s after removing all occurrences of part.
+
+A substring is a contiguous sequence of characters in a string.
+
+&nbsp;
+Example 1:
+
+
+Input: s = &quot;daabcbaabcbc&quot;, part = &quot;abc&quot;
+Output: &quot;dab&quot;
+Explanation: The following operations are done:
+- s = &quot;daabcbaabcbc&quot;, remove &quot;abc&quot; starting at index 2, so s = &quot;dabaabcbc&quot;.
+- s = &quot;dabaabcbc&quot;, remove &quot;abc&quot; starting at index 4, so s = &quot;dababc&quot;.
+- s = &quot;dababc&quot;, remove &quot;abc&quot; starting at index 3, so s = &quot;dab&quot;.
+Now s has no occurrences of &quot;abc&quot;.
+
+
+Example 2:
+
+
+Input: s = &quot;axxxxyyyyb&quot;, part = &quot;xy&quot;
+Output: &quot;ab&quot;
+Explanation: The following operations are done:
+- s = &quot;axxxxyyyyb&quot;, remove &quot;xy&quot; starting at index 4 so s = &quot;axxxyyyb&quot;.
+- s = &quot;axxxyyyb&quot;, remove &quot;xy&quot; starting at index 3 so s = &quot;axxyyb&quot;.
+- s = &quot;axxyyb&quot;, remove &quot;xy&quot; starting at index 2 so s = &quot;axyb&quot;.
+- s = &quot;axyb&quot;, remove &quot;xy&quot; starting at index 1 so s = &quot;ab&quot;.
+Now s has no occurrences of &quot;xy&quot;.
+
+
+&nbsp;
+Constraints:
+
+
+	1 &lt;= s.length &lt;= 1000
+	1 &lt;= part.length &lt;= 1000
+	s​​​​​​ and part consists of lowercase English letters.
+
