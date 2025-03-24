@@ -18,6 +18,7 @@ func init() {
 	rootCmd.AddCommand(ProblemCmd)
 
 	DailyCmd.PersistentFlags().StringVarP(&language, "language", "l", "go", "Language")
+	ProblemCmd.PersistentFlags().StringVarP(&language, "language", "l", "go", "Language")
 
 	ProblemCmd.PersistentFlags().StringVarP(&id, "id", "i", "", "problem id")
 	ProblemCmd.MarkPersistentFlagRequired("id")
